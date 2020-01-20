@@ -2,7 +2,7 @@
   <div class="login">
 <el-form ref="form" :model="form" :rules="rules" status-icon label-width="80px">
 <img src="../assets/head.png" alt="">
-  <el-form-item label="用户名：" prop="username">
+  <el-form-item label="用户名(账号)：" prop="username">
     <el-input v-model="form.username"></el-input>
   </el-form-item>
   <el-form-item label="密码：" prop="password">
@@ -10,8 +10,9 @@
   </el-form-item>
 <el-form-item>
     <el-button type="primary" @click="login">登录</el-button>
-    <el-button>取消</el-button>
+    <el-button @click="newuser">注册</el-button>
 </el-form-item>
+
 </el-form>
 </div>
 </template>
@@ -38,7 +39,15 @@ export default {
   methods: {
     login () {
       alert('登录成功')
+    },
+    newuser () {
+      this.$router.push('/newuser')
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+
+    })
   }
 }
 </script>
@@ -46,7 +55,7 @@ export default {
 <style lang="less" scoped>
   .login{
     height: 100%;
-    background-color:#528FFF;
+    background-color:#2d85cd;
     overflow: hidden;
     .el-form  {
       background-color: #fff;

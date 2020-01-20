@@ -9,6 +9,7 @@
     padding: 0;
     margin: 0;
     list-style: none;
+    font-style: '微软雅黑';
   }
   html,body,#app {
     height: 100%;
