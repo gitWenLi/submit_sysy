@@ -1,46 +1,46 @@
 <template>
   <div class="new_user">
-<el-form ref="form" :model="form" :rules="rules" status-icon label-width="80px">
-<p>用户注册</p>
-  <el-form-item label="用户名" prop="username">
-    <el-input v-model="form.username"></el-input>
+  <el-form ref="form" :model="form" :rules="rules" status-icon label-width="80px">
+  <p>用户注册</p>
+    <el-form-item label="用户名" prop="username">
+      <el-input v-model="form.username"></el-input>
+    </el-form-item>
+    <el-form-item label="学号" prop="userNum">
+      <el-input v-model="form.userNum"></el-input>
+    </el-form-item>
+    <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="确认密码" prop="checkPass">
+      <el-input type="password" v-model="form.checkPass" auto-complete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="性别">
+      <el-select v-model="form.sex" placeholder="请选择性别">
+        <el-option label="男" value="男"></el-option>
+        <el-option label="女" value="女"></el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="院系">
+      <el-select v-model="form.faculty" placeholder="请选择院系">
+        <el-option label="区域一" value="shanghai"></el-option>
+        <el-option label="区域二" value="beijing"></el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="专业">
+      <el-select v-model="form.major" placeholder="请选择专业">
+        <el-option label="区域一" value="shanghai"></el-option>
+        <el-option label="区域二" value="beijing"></el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="个人描述">
+      <el-input type="textarea" v-model="form.desc"></el-input>
+    </el-form-item>
+  <el-form-item>
+      <el-button type="primary" @click="success">完成</el-button>
+      <el-button>重置</el-button>
   </el-form-item>
-  <el-form-item label="学号" prop="userNum">
-    <el-input v-model="form.userNum"></el-input>
-  </el-form-item>
-  <el-form-item label="密码" prop="password">
-      <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="确认密码" prop="checkPass">
-    <el-input type="password" v-model="form.checkPass" auto-complete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="性别">
-    <el-radio-group v-model="form.sex">
-      <el-radio label="男"></el-radio>
-      <el-radio label="女"></el-radio>
-    </el-radio-group>
-  </el-form-item>
-  <el-form-item label="院系">
-    <el-select v-model="form.faculty" placeholder="请选择院系">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-    </el-select>
-  </el-form-item>
-  <el-form-item label="专业">
-    <el-select v-model="form.major" placeholder="请选择专业">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-    </el-select>
-  </el-form-item>
-  <el-form-item label="个人描述">
-    <el-input type="textarea" v-model="form.desc"></el-input>
-  </el-form-item>
-<el-form-item>
-    <el-button type="primary" @click="success">完成</el-button>
-    <el-button>重置</el-button>
-</el-form-item>
 
-</el-form>
+  </el-form>
 </div>
 </template>
 
@@ -101,8 +101,14 @@ export default {
     success () {
       this.$refs.form.validate(async valied => {
         if (!valied) return false
-        const data = await this.$axios.post('user/addUser', this.form)
-        console.log(data)
+        const { data } = await this.$axios.post('user/addUser', this.form)
+        // console.log(data.code, data.msg)
+        if (data.code === 0) {
+          this.$message.success(data.msg)
+          this.$router.push('/login')
+        } else {
+          this.$message.error(data.msg)
+        }
       })
     }
   }

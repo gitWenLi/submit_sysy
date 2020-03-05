@@ -26,33 +26,40 @@
                     :default-active="getpath"
                     class="el-menu-vertical-demo"
                     @open="handleOpen"
-                    @close="handleClose"
-                    unique-opened>
+                    @close="handleClose">
                     <el-menu-item index="index">
                       <i class="el-icon-menu"></i>
                       <span slot="title">首页</span>
                     </el-menu-item>
-                    <el-submenu index="1" :default-active="getpath">
-                      <template slot="title">
-                        <i class="el-icon-menu"></i>
-                        <span>科研成果</span>
-                      </template>
-                      <el-menu-item-group>
-                        <el-menu-item index="/listlook"><i class="el-icon-d-arrow-right"></i>科研成果预览</el-menu-item>
-                        <el-menu-item index="/listquery"><i class="el-icon-d-arrow-right"></i>科研成果查询</el-menu-item>
-                        <el-menu-item index="/submit"><i class="el-icon-d-arrow-right"></i>科研成果上传登记</el-menu-item>
-                        <el-menu-item index="/manage"><i class="el-icon-d-arrow-right"></i>科研成果管理</el-menu-item>
-                      </el-menu-item-group>
-                    </el-submenu>
+                    <!-- 科研成果 -->
+                      <el-submenu index="1" :default-active="getpath">
+                        <template slot="title">
+                          <i class="el-icon-menu"></i>
+                          <span>科研成果</span>
+                        </template>
+                        <el-menu-item-group>
+                          <el-menu-item index="/listlook"><i class="el-icon-d-arrow-right"></i>科研成果预览</el-menu-item>
+                          <el-menu-item index="/listquery"><i class="el-icon-d-arrow-right"></i>科研成果查询</el-menu-item>
+                          <el-menu-item index="/submit"  v-if="isAdministrator == 'false'" ><i class="el-icon-d-arrow-right"></i>科研成果上传登记</el-menu-item>
+                          <el-menu-item index="/manage"  v-if="isAdministrator == 'true'"  ><i class="el-icon-d-arrow-right"></i>科研成果管理</el-menu-item>
+                        </el-menu-item-group>
+                      </el-submenu>
+
+                    <!-- 科研成果登记（审批）  -->
                     <el-submenu index="2">
                       <template slot="title">
                         <i class="el-icon-menu"></i>
-                        <span>科研成果登记</span>
+                        <span v-if="isAdministrator == 'false'" >科研成果登记</span>
+                        <span v-if="isAdministrator == 'true'" >科研成果审批</span>
                       </template>
+                        <el-menu-item index="/processagreen" v-if="isAdministrator == 'false'" ><i class="el-icon-d-arrow-right"></i>科研成果登记</el-menu-item>
+                        <el-menu-item index="/processagreen" v-if="isAdministrator == 'true'" ><i class="el-icon-d-arrow-right"></i>科研成果审批</el-menu-item>
                         <el-menu-item index="/processlook"><i class="el-icon-d-arrow-right"></i>科研成果登记（审批）流程</el-menu-item>
-                        <el-menu-item index="/processrecord"><i class="el-icon-d-arrow-right"></i>科研成果登记记录</el-menu-item>
-                        <el-menu-item index="/processagreen"><i class="el-icon-d-arrow-right"></i>科研成果审批</el-menu-item>
+                        <el-menu-item index="/processrecord" v-if="isAdministrator == 'false'" ><i class="el-icon-d-arrow-right"></i>科研成果登记记录</el-menu-item>
+                        <el-menu-item index="/processrecord" v-if="isAdministrator == 'true'" ><i class="el-icon-d-arrow-right"></i>科研成果审批记录</el-menu-item>
                     </el-submenu>
+
+                    <!-- 科研成果交流 -->
                     <el-submenu index="3">
                       <template slot="title">
                         <i class="el-icon-menu"></i>
@@ -61,26 +68,30 @@
                         <el-menu-item index="/community"><i class="el-icon-d-arrow-right"></i>交流社区</el-menu-item>
                         <el-menu-item index="/aboutmy"><i class="el-icon-d-arrow-right"></i>关于我的</el-menu-item>
                     </el-submenu>
+
+                    <!-- 我的科研成果登记（审批） -->
                     <el-submenu index="4">
                       <template slot="title">
                         <i class="el-icon-menu"></i>
-                        <span>我的科研成果登记（审批）</span>
+                        <span v-if="isAdministrator == 'false'" >我的科研成果登记</span>
+                        <span v-if="isAdministrator == 'true'" >我的科研成果审批</span>
                       </template>
-                        <el-menu-item index="/currentstatus"><i class="el-icon-d-arrow-right"></i>当前登记状态</el-menu-item>
-                        <el-menu-item index="/historyuser"><i class="el-icon-d-arrow-right"></i>历史登记记录</el-menu-item>
-                        <el-menu-item index="/historyadmin"><i class="el-icon-d-arrow-right"></i>历史审批记录</el-menu-item>
+                        <el-menu-item index="/currentstatus" v-if="isAdministrator == 'false'"><i class="el-icon-d-arrow-right"></i>当前登记状态</el-menu-item>
+                        <el-menu-item index="/historyuser" v-if="isAdministrator == 'false'"><i class="el-icon-d-arrow-right"></i>历史登记记录</el-menu-item>
+                        <el-menu-item index="/historyadmin" v-if="isAdministrator == 'true'"><i class="el-icon-d-arrow-right"></i>历史审批记录</el-menu-item>
                     </el-submenu>
-                    <el-submenu index="5">
+
+                    <!-- 个人管理 -->
+                    <el-submenu index="5" >
                       <template slot="title">
                         <i class="el-icon-menu"></i>
                         <span>个人管理</span>
                       </template>
                         <el-menu-item index="/personalinfo"><i class="el-icon-d-arrow-right"></i>个人信息</el-menu-item>
                         <el-menu-item index="/changeinfo"><i class="el-icon-d-arrow-right"></i>修改个人信息</el-menu-item>
-                        <el-menu-item index="/manageuser"><i class="el-icon-d-arrow-right"></i>普通用户账号管理</el-menu-item>
-                        <el-menu-item index="/addadmin"><i class="el-icon-d-arrow-right"></i>添加管理员</el-menu-item>
+                        <el-menu-item index="/manageuser" v-if="isAdministrator == 'true'"><i class="el-icon-d-arrow-right" ></i>普通用户账号管理</el-menu-item>
+                        <el-menu-item index="/addadmin" v-if="isAdministrator == 'true'"><i class="el-icon-d-arrow-right" ></i>添加管理员</el-menu-item>
                     </el-submenu>
-
                   </el-menu>
                 </el-col>
             </el-aside>
@@ -97,7 +108,8 @@
 export default {
   data () {
     return {
-      isCollapse: true
+      isCollapse: true,
+      isAdministrator: localStorage.getItem('isAdministrator')
     }
   },
   methods: {
@@ -110,6 +122,7 @@ export default {
   },
   computed: {
     getpath () {
+      console.log('isAdministrator', this.isAdministrator)
       return this.$route.path.slice(1).split('-')[0]
     }
   },

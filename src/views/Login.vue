@@ -2,11 +2,11 @@
   <div class="login">
 <el-form ref="form" :model="form" :rules="rules" status-icon label-width="80px">
 <img src="../assets/head.png" alt="">
-  <el-form-item label="用户名(账号)：" prop="username">
-    <el-input v-model="form.username"></el-input>
+  <el-form-item label="账号：" prop="userNum">
+    <el-input v-model="form.userNum"></el-input>
   </el-form-item>
   <el-form-item label="密码：" prop="password">
-      <el-input v-model="form.password" ></el-input>
+      <el-input type="password" v-model="form.password" ></el-input>
   </el-form-item>
 <el-form-item>
     <el-button type="primary" @click="login">登录</el-button>
@@ -22,11 +22,11 @@ export default {
   data () {
     return {
       form: {
-        username: '',
+        userNum: '',
         password: ''
       },
       rules: {
-        username: [
+        userNum: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
         password: [
@@ -38,7 +38,17 @@ export default {
   },
   methods: {
     login () {
-      alert('登录成功')
+      this.$refs.form.validate(async valied => {
+        if (!valied) return false
+        const { data } = await this.$axios.post('user/login', this.form)
+        if (data.code === 0) {
+          this.$message.success(data.msg)
+          localStorage.setItem('isAdministrator', data.data.isAdministrator)
+          this.$router.push('/index')
+        } else {
+          this.$message.error(data.msg)
+        }
+      })
     },
     newuser () {
       this.$router.push('/newuser')

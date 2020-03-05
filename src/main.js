@@ -12,8 +12,9 @@ Vue.use(ElementUI)
 
 Vue.prototype.$axios = axios
 
-axios.defaults.baseURL = 'http://zz.mawenli.com/api'
-
+axios.defaults.baseURL = 'http://zz.mawenli.com/'
+axios.defaults.withCredentials = true
+// console.log('process---: ', process)
 Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
