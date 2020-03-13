@@ -15,7 +15,7 @@
                   <span></span>
             </a>
             <p>当前用户:123456</p>
-            <el-button round size="mini">登出</el-button>
+            <el-button round size="mini" @click="loginOut">登出</el-button>
           </div>
         </el-header>
         <el-container>
@@ -112,12 +112,48 @@ export default {
       isAdministrator: localStorage.getItem('isAdministrator')
     }
   },
+  created () {
+    if (!localStorage.getItem('facultyArr' || !localStorage.getItem('majorArr'))) {
+      this.getConfig()
+    }
+  },
   methods: {
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
+    },
+    async loginOut () {
+      try {
+        await this.$confirm('确定退出该用户吗？', '温馨提示', { type: 'warning' })
+        const { data } = await this.$axios.get('user/logout')
+        // console.log(data)
+        if (data.code === 0) {
+          this.$message.success(data.msg)
+          this.$router.push('/login')
+        } else {
+          this.$$message.error(data.msg)
+        }
+      } catch {
+        this.$message.info('已取消操作')
+      }
+    },
+    async getConfig () {
+      const { data } = await this.$axios.get('config/facultyMajor')
+      console.log(data.data)
+      let faculty = []
+      let major = []
+      data.data.forEach(item => {
+        faculty.push({ value: item.value, label: item.label })
+        item.children.forEach(sItem => {
+          major.push(sItem)
+        })
+        major.push(item.children)
+      })
+      // console.log(faculty, major)
+      localStorage.setItem('majorArr', JSON.stringify(major))
+      localStorage.setItem('facultyArr', JSON.stringify(faculty))
     }
   },
   computed: {

@@ -42,7 +42,7 @@
     <el-pagination
       background
       layout="prev, pager, next"
-      :total="total">
+      :total="100">
     </el-pagination>
 
     <!-- 添加管理员模态框 -->
@@ -67,7 +67,7 @@
     <el-button type="primary" @click="addAdmin">添加</el-button>
     <el-button @click="handleAddAdmin = false">取消</el-button>
     </span>
-</el-dialog>
+    </el-dialog>
   </div>
 </template>
 

@@ -23,14 +23,14 @@
     </el-form-item>
     <el-form-item label="院系" prop="faculty">
       <el-select v-model="form.faculty" :placeholder="userInfoList.faculty ? userInfoList.faculty : '请选择院系'">
-        <el-option label="区域一" value="shanghai"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
+        <el-option label="区域一" value="01"></el-option>
+        <el-option label="区域二" value="02"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="专业"  prop="major">
       <el-select v-model="form.major" :placeholder="userInfoList.major ? userInfoList.major : '请选择专业'">
-        <el-option label="区域一" value="shanghai"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
+        <el-option label="区域一" value="0101"></el-option>
+        <el-option label="区域二" value="0404"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="头像" prop="avatar" class="userimg">
