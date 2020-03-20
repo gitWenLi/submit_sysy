@@ -63,12 +63,12 @@
           <el-form-item label="性别：">
             {{userInfoData.sex == 0 ? '女' : '男'}}
           </el-form-item>
-          <!-- <el-form-item label="所在学院：">
+          <el-form-item label="所在学院：">
             {{userInfoData.faculty == '' ? '未填' : getFacultyMajor('faculty', userInfoData.faculty)}}
           </el-form-item>
           <el-form-item label="所在专业：">
             {{userInfoData.major == '' ? '未填' : getFacultyMajor('major', userInfoData.major)}}
-          </el-form-item> -->
+          </el-form-item>
           <el-form-item label="职位：">
             {{userInfoData.jobName == '' ? '未填' : userInfoData.jobName}}
           </el-form-item>

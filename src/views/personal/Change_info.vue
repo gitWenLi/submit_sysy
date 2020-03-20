@@ -21,16 +21,22 @@
         <el-option label="女" :value="0"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="院系" prop="faculty">
-      <el-select v-model="form.faculty" :placeholder="userInfoList.faculty ? userInfoList.faculty : '请选择院系'">
-        <el-option label="区域一" value="01"></el-option>
-        <el-option label="区域二" value="02"></el-option>
+    <el-form-item label="院系">
+      <el-select v-model="form.faculty" :placeholder="userInfoList.faculty ? userInfoList.faculty : '请选择院系'" @change="getMajor($event)">
+        <el-option
+        v-for="item in facultyList"
+        :key="item._id"
+        :label="item.facultyName"
+        :value="item._id"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="专业"  prop="major">
+    <el-form-item label="专业" >
       <el-select v-model="form.major" :placeholder="userInfoList.major ? userInfoList.major : '请选择专业'">
-        <el-option label="区域一" value="0101"></el-option>
-        <el-option label="区域二" value="0404"></el-option>
+        <el-option
+          v-for="item in majorList"
+          :key="item._id"
+          :label="item.majorName"
+          :value="item._id"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="头像" prop="avatar" class="userimg">
@@ -72,32 +78,35 @@ export default {
         // password: '',
         // checkPass: '',
         sex: '',
-        faculty: '', // 院系编号
-        major: '', // 专业编号
+        faculty: [], // 院系编号
+        major: [], // 专业编号
         desc: '', // 个人描述
         avatar: '', // 头像
         jobName: '' // 职位
       },
+      facultyList: {},
       userInfoList: {},
       imageUrl: '',
       rules: {
         sex: [
           { required: true, message: '请选择性别', trigger: 'change' }
-        ],
-        faculty: [
-          { required: true, message: '请选择院系', trigger: 'change' }
-        ],
-        major: [
-          { required: true, message: '请选择专业', trigger: 'change' }
-        ],
-        jobName: [
-          { required: true, message: '请选择职位', trigger: 'change' }
         ]
+        // faculty: [
+        //   { required: true, message: '请选择院系', trigger: 'change' }
+        // ],
+        // major: [
+        //   { required: true, message: '请选择专业', trigger: 'change' }
+        // ],
+        // jobName: [
+        //   { required: true, message: '请选择职位', trigger: 'change' }
+        // ]
       }
     }
   },
   created () {
     this.getUserList()
+    this.getFaculty()
+    this.getMajor()
   },
   methods: {
     async getUserList () {
@@ -109,12 +118,26 @@ export default {
       this.form.username = username
       this.form.avatar = avatar
       this.form.sex = sex
-      this.form.major = major
-      this.form.faculty = faculty
+      this.form.major = major.majorName
+      this.form.faculty = faculty.facultyName
       this.form.desc = desc
       this.form.jobName = jobName
-      // console.log(this.userInfoList)
     },
+    // 获取院系
+    async getFaculty () {
+      const { data } = await this.$axios.get('faculty')
+      // console.log(data)
+      this.facultyList = data.data
+      // console.log(this.facultyList)
+    },
+    // 获取专业
+    async getMajor (id) {
+      // console.log('hhh', id)
+      const { data } = await this.$axios.get(`major/faculty?id=${id}`)
+      // console.log(data)
+      this.majorList = data.data
+    },
+
     handleAvatarSuccess (res, file) {
       this.userInfoList.avatar = URL.createObjectURL(file.raw)
       this.form.avatar = URL.createObjectURL(file.raw)

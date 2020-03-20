@@ -20,8 +20,8 @@
       </div>
       <div class="info">
         <p class="item">性别：{{userInfoList.sex ? userInfoList.sex === 0 ? '女' : '男' : '未选择'}}</p>
-        <p class="item">所在学院：{{userInfoList.faculty ? userInfoList.faculty : '未选择'}}</p>
-        <p class="item">所在专业：{{userInfoList.major ? userInfoList.major : '未选择'}}</p>
+        <p class="item">所在学院：{{userInfoList.faculty.facultyName ? userInfoList.faculty.facultyName : '未选择'}}</p>
+        <p class="item">所在专业：{{userInfoList.major.majorName ? userInfoList.major.majorName : '未选择'}}</p>
         <el-tag  v-if="!userInfoList.sex || !userInfoList.faculty || !userInfoList.major" type="warning">注意：请完善信息！点击修改信息进行完善</el-tag>
       </div>
 </el-card>
