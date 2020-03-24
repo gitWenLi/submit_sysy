@@ -91,15 +91,6 @@ export default {
         sex: [
           { required: true, message: '请选择性别', trigger: 'change' }
         ]
-        // faculty: [
-        //   { required: true, message: '请选择院系', trigger: 'change' }
-        // ],
-        // major: [
-        //   { required: true, message: '请选择专业', trigger: 'change' }
-        // ],
-        // jobName: [
-        //   { required: true, message: '请选择职位', trigger: 'change' }
-        // ]
       }
     }
   },
@@ -159,7 +150,7 @@ export default {
       this.$refs.form.validate(async valied => {
         if (!valied) return false
         const { data } = await this.$axios.put('user/myself', this.form)
-        console.log(data)
+        // console.log(data)
         if (data.code === 0) {
           this.$message.success(data.msg)
           this.$router.push('/PersonalInfo')

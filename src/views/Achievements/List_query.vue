@@ -37,7 +37,7 @@
       <el-input></el-input>
     </el-form-item>
     <el-form-item class="btn">
-      <el-button type="primary" round>搜索</el-button>
+      <el-button type="primary" round @click="queryList()">搜索</el-button>
     </el-form-item>
     </el-form>
   </div>
@@ -66,8 +66,12 @@ export default {
     // 获取类别
     async getCategory () {
       const { data } = await this.$axios.get('category')
-      console.log(data)
+      // console.log(data)
       this.majorList = data.data
+    },
+    // 查询
+    queryList () {
+
     }
   }
 }
@@ -75,8 +79,14 @@ export default {
 
 <style lang="less" scoped>
 .list_query {
+  .el-select {
+    display: block;
+  }
+  /deep/ .el-form--label-left .el-form-item__label {
+    text-align: center;
+  }
   .el-form-item {
-    width: 40%;
+    width: 30%;
     float: left;
     margin-left: 15px;
   }
