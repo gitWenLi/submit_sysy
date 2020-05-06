@@ -25,15 +25,15 @@
         label="账号">
       </el-table-column>
       <el-table-column
-        prop="howLong"
-        label="账号时长">
+        prop="createTime"
+        label="创建时间">
       </el-table-column>
       <el-table-column
         prop="jobName"
         label="职位">
       </el-table-column>
       <el-table-column
-        prop="recordNum"
+        prop="auditNum"
         label="审批数">
       </el-table-column>
     </el-table>
@@ -42,7 +42,10 @@
     <el-pagination
       background
       layout="prev, pager, next"
-      :total="100">
+      @current-change="handleCurrentSize"
+      :total="total"
+      :current-page="pn"
+      :page-size="size">
     </el-pagination>
 
     <!-- 添加管理员模态框 -->
@@ -94,11 +97,13 @@ export default {
       }
     }
     return {
+      total: 0,
+      pn: 1,
+      size: 10,
       tableData: [],
       handleAddAdmin: false,
       pagenum: 1,
       pagesize: 2, // 每页显示条数
-      total: 0,
       addForm: {
         username: '',
         userNum: '',
@@ -127,6 +132,11 @@ export default {
     this.getAdminList()
   },
   methods: {
+    // 分页
+    handleCurrentSize (index) {
+      this.pn = index
+      this.getAdminList()
+    },
     async getAdminList () {
       const { data } = await this.$axios.get('user/userList', {
         params: {

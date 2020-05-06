@@ -10,19 +10,19 @@
   <el-form ref="form" :model="form" :rules="rules" status-icon label-width="80px">
   <p>修改个人信息</p>
     <el-form-item label="用户名" class="flag">
-      <el-input v-model="userInfoList.username" readonly :placeholder="userInfoList.username"></el-input>
+      <el-input v-model="userInfoList.username" readonly :value="userInfoList.username"></el-input>
     </el-form-item>
     <el-form-item label="学号" class="flag">
-      <el-input v-model="userInfoList.userNum" readonly :placeholder="userInfoList.userNum"></el-input>
+      <el-input v-model="userInfoList.userNum" readonly :value="userInfoList.userNum"></el-input>
     </el-form-item>
     <el-form-item label="性别" prop="sex">
-      <el-select v-model="form.sex" :placeholder="userInfoList.sex ? userInfoList.sex : '请选择性别'"  >
+      <el-select v-model="form.sex" placeholder="请选择性别" :value="userInfoList.sex"  >
         <el-option label="男" :value="1"></el-option>
         <el-option label="女" :value="0"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="院系">
-      <el-select v-model="form.faculty" :placeholder="userInfoList.faculty ? userInfoList.faculty : '请选择院系'" @change="getMajor($event)">
+      <el-select v-model="form.faculty" placeholder="请选择院系" :value="userInfoList.faculty" @change="getMajor($event)">
         <el-option
         v-for="item in facultyList"
         :key="item._id"
@@ -30,15 +30,15 @@
         :value="item._id"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="专业" >
-      <el-select v-model="form.major" :placeholder="userInfoList.major ? userInfoList.major : '请选择专业'">
+    <!-- <el-form-item label="专业" >
+      <el-select v-model="form.major" placeholder="请选择专业" :value="userInfoList.major">
         <el-option
           v-for="item in majorList"
           :key="item._id"
           :label="item.majorName"
           :value="item._id"></el-option>
       </el-select>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="头像" prop="avatar" class="userimg">
       <el-upload
          class="avatar-uploader"
@@ -84,7 +84,9 @@ export default {
         avatar: '', // 头像
         jobName: '' // 职位
       },
-      facultyList: {},
+      majorList: [],
+      facultyList: [],
+      // facultyList: {},
       userInfoList: {},
       imageUrl: '',
       rules: {
@@ -97,7 +99,7 @@ export default {
   created () {
     this.getUserList()
     this.getFaculty()
-    this.getMajor()
+    // this.getMajor()
   },
   methods: {
     async getUserList () {
@@ -122,12 +124,12 @@ export default {
       // console.log(this.facultyList)
     },
     // 获取专业
-    async getMajor (id) {
-      // console.log('hhh', id)
-      const { data } = await this.$axios.get(`major/faculty?id=${id}`)
-      // console.log(data)
-      this.majorList = data.data
-    },
+    // async getMajor (id) {
+    //   // console.log('hhh', id)
+    //   const { data } = await this.$axios.get(`major/faculty?id=${id}`)
+    //   // console.log(data)
+    //   this.majorList = data.data
+    // },
 
     handleAvatarSuccess (res, file) {
       this.userInfoList.avatar = URL.createObjectURL(file.raw)

@@ -118,7 +118,9 @@ export default {
 <style lang="less" scoped>
   .new_user{
     // height: 100%;
-    background-color:#2d85cd;
+    // background-color:#2d85cd;
+    background: url("../assets/bgc.jpg") no-repeat;
+    background-size: 100% 100%;
     overflow: hidden;
     .el-form  {
       background-color: #fff;

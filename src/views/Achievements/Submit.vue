@@ -13,7 +13,7 @@
       <el-form-item label="标题" prop="title" >
         <el-input v-model="submitForm.title" placeholder="请输入标题" ></el-input>
       </el-form-item>
-      <el-form-item label="院系" prop="faculty">
+      <el-form-item label="院系" prop="facultyName">
         <el-select v-model="submitForm.facultyName" placeholder="请选择院系" >
           <el-option
           v-for="item in facultyList"
@@ -23,8 +23,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="类别" prop="category"  >
-        <el-select v-model="submitForm.category" >
-          <el-option>全部</el-option>
+        <el-select v-model="submitForm.category" placeholder="请选择类别" >
+          <el-option value="">全部</el-option>
           <el-option
           v-for="item in majorList"
           :key="item._id"
@@ -50,6 +50,10 @@
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
       </el-form-item>
+      <el-form class="btns">
+        <el-button type="primary" @click="submit" >提交</el-button>
+        <el-button @click="resetForm" >重置</el-button>
+      </el-form>
     </el-form>
   </div>
 </template>
@@ -64,18 +68,19 @@ export default {
     return {
       submitForm: {
         title: '',
-        faculty: '',
+        facultyName: '',
         content: '',
         category: '',
         accessoryArr: []
       },
       facultyList: [],
       majorList: [],
+      fileList: [],
       rules: {
         title: [
           { required: true, message: '请输入标题', trigger: 'blur' }
         ],
-        faculty: [
+        facultyName: [
           { required: true, message: '请选择院系', trigger: 'change' }
         ],
         category: [
@@ -105,7 +110,8 @@ export default {
     }
   },
   created () {
-
+    this.getFaculty()
+    this.getCategory()
   },
   methods: {
   // 获取院系
@@ -123,16 +129,31 @@ export default {
     },
     // 上传成功
     handleSuccess (data) {
-      console.log(data)
+      if (data.code === 0) {
+        this.$message.success('上传成功!')
+        this.submitForm.accessoryArr.push(data.filePath)
+      } else {
+        this.$message.error('上传失败')
+      }
+    },
+    // 删除文件
+    beforeRemove () {
+
     },
     // 富文本图片上传
     async handleImageAdded (file, Editor, cursorLocation, resetUploader) {
-      let uploadFile = {
-        file: file
-      }
+      console.log(file)
+      // let uploadFile = {
+      //   file: file
+      // }
       if (file) {
-        const { data } = await this.$$axios.post('upload/uploadImg', uploadFile)
-        console.log(data)
+        const { data } = await this.$axios.post('upload/uploadImg', file)
+        // console.log(data)
+        if (data.code === 0) {
+          this.$message.success('上传成功!')
+        } else {
+          this.$message.error('上传失败')
+        }
         // if (data.errorCode === 0) {
         //   let imgUrl = data.data[0].filePath
         //   let url = process.env.NODE_ENV === 'production' ? location.origin + '/marketingPC' + imgUrl: 'http://test.kelefan.cn:8080/marketingPC' + imgUrl
@@ -142,6 +163,24 @@ export default {
         //   this.$message.error(data.errorMsg)
         // }
       }
+    },
+    //  提交
+    submit () {
+      this.$refs.submitForm.validate(async valied => {
+        if (!valied) return false
+        const { data } = await this.$axios.post('achievement', this.submitForm)
+        // console.log(data)
+        if (data.code === 0) {
+          this.$message.success('添加成功')
+          this.$router.push('/listlook')
+        } else {
+          this.$message.error(data.msg)
+        }
+      })
+    },
+    // 重置
+    resetForm () {
+
     }
   }
 }
@@ -151,9 +190,20 @@ export default {
 .submit {
   .el-form {
     padding: 0 100px;
+    background-color: #fff;
+    .btns {
+      display: flex;
+      justify-content: space-around;
+      padding-bottom: 40px;
+      .el-button {
+        padding: 12px 45px;
+      }
+    }
     p {
       font-size: 24px;
       font-weight: 800;
+      // margin-bottom: 50px;
+      line-height: 80px;
     }
   }
     .el-select {
@@ -161,6 +211,9 @@ export default {
   }
   .quillWrapper {
     background-color: #fff;
+  }
+  .upload-demo {
+    text-align: left;
   }
 }
 </style>

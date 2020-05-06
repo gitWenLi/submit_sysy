@@ -25,6 +25,7 @@ const PersonalInfo = () => import(/* webpackChunkName: 'personal' */ '../views/p
 const ProcessAgree = () => import(/* webpackChunkName: 'process' */ '../views/process/Process_agree.vue')
 const ProcessLook = () => import(/* webpackChunkName: 'process' */ '../views/process/Process_look.vue')
 const ProcessRecord = () => import(/* webpackChunkName: 'process' */ '../views/process/Process_record.vue')
+const ProcessDetail = () => import(/* webpackChunkName: 'process' */ '../views/process/Process_detail.vue')
 
 Vue.use(VueRouter)
 
@@ -104,6 +105,10 @@ const routes = [
       {
         path: '/processrecord',
         component: ProcessRecord
+      },
+      {
+        path: '/processdetail',
+        component: ProcessDetail
       }
     ]
   },

@@ -20,12 +20,12 @@
       </el-table-column>
       <template>
 
-      <el-table-column label="院系" prop="getFacultyMajor('faculty',faculty)">
-        <!-- <template v-slot="{row}"> -->
-          <!-- <span></span> -->
-          <!-- <span>{{ row.facultyct }}</span> -->
-        <!-- </template> -->
-      </el-table-column>
+      <!-- <el-table-column label="院系" prop="getFacultyMajor('faculty',faculty)">
+        <template v-slot="{row}">
+          <span></span>
+          <span>{{ row.facultyct }}</span>
+        </template>
+      </el-table-column> -->
       </template>
       <el-table-column
         label="详细信息">
@@ -47,7 +47,10 @@
     <el-pagination
       background
       layout="prev, pager, next"
-      :total="100">
+      @current-change="handleCurrentSize"
+      :total="total"
+      :current-page="pn"
+      :page-size="size">
     </el-pagination>
 
     <!-- 查看用户信息模态框 -->
@@ -63,12 +66,12 @@
           <el-form-item label="性别：">
             {{userInfoData.sex == 0 ? '女' : '男'}}
           </el-form-item>
-          <el-form-item label="所在学院：">
+          <!-- <el-form-item label="所在学院：">
             {{userInfoData.faculty == '' ? '未填' : getFacultyMajor('faculty', userInfoData.faculty)}}
           </el-form-item>
           <el-form-item label="所在专业：">
             {{userInfoData.major == '' ? '未填' : getFacultyMajor('major', userInfoData.major)}}
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="职位：">
             {{userInfoData.jobName == '' ? '未填' : userInfoData.jobName}}
           </el-form-item>
@@ -89,9 +92,9 @@ export default {
   data () {
     return {
       tableData: [],
-      pagenum: 1,
-      pagesize: 2, // 每页显示条数
-      total: 10,
+      pn: 1,
+      size: 10, // 每页显示条数
+      total: 0,
       handleUserInfo: false,
       userInfoData: {}
     }
@@ -100,22 +103,27 @@ export default {
     this.getUserList()
   },
   methods: {
-    getFacultyMajor (type, val) {
-      console.log(val)
-      let arr = []
-      if (type === 'faculty') {
-        arr = JSON.parse(localStorage.getItem('facultyArr'))
-      } else {
-        arr = JSON.parse(localStorage.getItem('majorArr'))
-      }
-      for (let item of arr) {
-        if (val.val === item.lable) {
-          console.log('item', item.value)
-          return item.value
-        }
-      }
-      // return ''
+    // 分页
+    handleCurrentSize (index) {
+      this.pn = index
+      this.getUserList()
     },
+    // getFacultyMajor (type, val) {
+    //   console.log(val)
+    //   let arr = []
+    //   if (type === 'faculty') {
+    //     arr = JSON.parse(localStorage.getItem('facultyArr'))
+    //   } else {
+    //     arr = JSON.parse(localStorage.getItem('majorArr'))
+    //   }
+    //   for (let item of arr) {
+    //     if (val.val === item.lable) {
+    //       console.log('item', item.value)
+    //       return item.value
+    //     }
+    //   }
+    //   // return ''
+    // },
     async getUserList () {
       const { data } = await this.$axios.get('user/userList')
       // console.log(data)

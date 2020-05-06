@@ -1,7 +1,8 @@
 <template>
   <div class="login">
 <el-form ref="form" :model="form" :rules="rules" status-icon label-width="80px">
-<img src="../assets/head.png" alt="">
+<img src="../assets/logo.jpg" alt="">
+  <p>黄淮学院科研成果登记系统</p>
   <el-form-item label="账号：" prop="userNum">
     <el-input v-model="form.userNum"></el-input>
   </el-form-item>
@@ -44,7 +45,7 @@ export default {
         if (data.code === 0) {
           this.$message.success(data.msg)
           localStorage.setItem('isAdministrator', data.data.isAdministrator)
-          this.$router.push('/index')
+          this.$router.push('/listquery')
         } else {
           this.$message.error(data.msg)
         }
@@ -65,7 +66,9 @@ export default {
 <style lang="less" scoped>
   .login{
     height: 100%;
-    background-color:#2d85cd;
+    // background-color:#2d85cd;
+    background: url("../assets/bgc.jpg") no-repeat;
+    background-size: 100% 100%;
     overflow: hidden;
     .el-form  {
       background-color: #fff;
@@ -78,11 +81,16 @@ export default {
         float: right;
         margin-right: 50px;
       }
+      p {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: '微软雅黑';
+      }
       img {
         display: block;
-        width: 120px;
+        width: 240px;
         position: absolute;
-        top: -95px;
+        top: -55px;
         left: 50%;
         transform: translateX(-50%);
         border: 10px solid #fff;

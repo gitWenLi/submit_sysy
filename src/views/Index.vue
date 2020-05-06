@@ -27,10 +27,6 @@
                     class="el-menu-vertical-demo"
                     @open="handleOpen"
                     @close="handleClose">
-                    <el-menu-item index="index">
-                      <i class="el-icon-menu"></i>
-                      <span slot="title">首页</span>
-                    </el-menu-item>
                     <!-- 科研成果 -->
                       <el-submenu index="1" :default-active="getpath">
                         <template slot="title">
@@ -38,8 +34,8 @@
                           <span>科研成果</span>
                         </template>
                         <el-menu-item-group>
-                          <el-menu-item index="/listlook"><i class="el-icon-d-arrow-right"></i>科研成果预览</el-menu-item>
-                          <el-menu-item index="/listquery"><i class="el-icon-d-arrow-right"></i>科研成果查询</el-menu-item>
+                          <!-- <el-menu-item index="/listlook"><i class="el-icon-d-arrow-right"></i>科研成果预览</el-menu-item> -->
+                          <el-menu-item index="/listquery"><i class="el-icon-d-arrow-right"></i>科研成果</el-menu-item>
                           <el-menu-item index="/submit"  v-if="isAdministrator == 'false'" ><i class="el-icon-d-arrow-right"></i>科研成果上传登记</el-menu-item>
                           <el-menu-item index="/manage"  v-if="isAdministrator == 'true'"  ><i class="el-icon-d-arrow-right"></i>科研成果管理</el-menu-item>
                         </el-menu-item-group>
@@ -60,14 +56,14 @@
                     </el-submenu>
 
                     <!-- 科研成果交流 -->
-                    <el-submenu index="3">
+                    <!-- <el-submenu index="3">
                       <template slot="title">
                         <i class="el-icon-menu"></i>
                         <span>科研成果交流</span>
                       </template>
                         <el-menu-item index="/community"><i class="el-icon-d-arrow-right"></i>交流社区</el-menu-item>
                         <el-menu-item index="/aboutmy"><i class="el-icon-d-arrow-right"></i>关于我的</el-menu-item>
-                    </el-submenu>
+                    </el-submenu> -->
 
                     <!-- 我的科研成果登记（审批） -->
                     <el-submenu index="4">
@@ -235,6 +231,7 @@ export default {
     text-align: center;
     line-height: 200px;
     position: relative;
+    width: 180px;
     .el-submenu, .el-menu-item{
         text-align: left;
     }
@@ -244,7 +241,7 @@ export default {
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
+    // line-height: 160px;
   }
   .el-container {
     height: 100%;

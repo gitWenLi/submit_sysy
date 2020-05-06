@@ -29,11 +29,14 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- 分页 -->
+          <!-- 分页 -->
         <el-pagination
           background
           layout="prev, pager, next"
-          :total="1000">
+          @current-change="handleCurrentSize"
+          :total="total"
+          :current-page="pn"
+          :page-size="size">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane>
@@ -86,6 +89,9 @@
 export default {
   data () {
     return {
+      total: 0,
+      pn: 1,
+      size: 10,
       categoryList: [],
       addDialogVisible: false,
       editDialogVisible: false,
@@ -109,10 +115,17 @@ export default {
     this.getCategoryData()
   },
   methods: {
+    // 分页
+    handleCurrentSize (index) {
+      this.pn = index
+      this.getCategoryData()
+    },
+    // 获取表格数据
     async getCategoryData () {
       const { data } = await this.$axios.get('/category')
       // console.log(data)
       this.categoryList = data.data
+      this.total = data.data.length
     },
     // 模态框显示
     showAddModel () {
